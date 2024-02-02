@@ -1,0 +1,17 @@
+body {
+    margin: 0px;
+    background-color: rgb(239, 215, 185);
+}
+.navBar {
+    margin: none;
+    background-color: #3c280d;
+    padding: 20px;
+    text-align: right;
+}
+.navBarMenu {
+    margin: 30px;
+    font-size: large;
+    font-weight: 600;
+    color: rgb(235, 204, 167);
+    text-decoration: none;
+}
