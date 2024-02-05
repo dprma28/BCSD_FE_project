@@ -1,9 +1,15 @@
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
+import React, { useEffect } from 'react';
+import Modal from 'react-modal';
 import Home from "./Home";
 import Search from "./Search";
 import './Nav.css';
 
 export default function App() {
+  useEffect(() => {
+    Modal.setAppElement('#root');
+  }, []);
+
   return (
     <BrowserRouter>
       <div className="navBar">

@@ -1,15 +1,15 @@
 import React from "react";
 import styled from 'styled-components';
-import useSearchStore from './useSearchstore';
+import Store from './Store';
 import { searchBook } from "./Api";
 import Modal from 'react-modal';
 
 export default function Search() {
     const { query, setQuery, 
             searchResult, setSearchResult, 
-            readBookTitle, setReadBookTitle, 
+            readBookTitle, setReadBookTitle, setReadBookTitles,
             isModalOpen, setIsModalOpen,
-            review, setReview } = useSearchStore();
+            review, setReview, setReviews } = Store();
 
     const handleSearch = async () => {
         if(query.trim() === '') {
@@ -28,23 +28,37 @@ export default function Search() {
     const openModal = () => {
         setIsModalOpen(true);
     };
+    const handleReviewSubmit = async () => {
+        if (review.trim() === '') {
+            alert("리뷰를 입력하세요.");
+            return;
+        } else {
+            setReadBookTitles(readBookTitle);
+            setReviews(prevReviews => [...prevReviews, review]);
+
+            setReview('');
+            setQuery('');
+            setSearchResult('');
+            
+            closeModal();
+        }
+    };
     const closeModal = () => {
         setIsModalOpen(false);
     };
-    const handleReviewSubmit = () => {
-        closeModal();
-    };
+
     return (
         <div>
-        <SearchContainer>
-            <StyledInput 
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="책 제목을 입력하세요"
-            />
-            <StyledButton onClick={handleSearch}>🔍︎</StyledButton>
-        </SearchContainer>
+            <SearchContainer>
+                <StyledInput 
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="책 제목을 입력하세요"
+                />
+                <StyledButton onClick={handleSearch}>🔍︎</StyledButton>
+            </SearchContainer>
+
             {searchResult && (
                 <BookContainer>
                     {searchResult.map((book) => (
@@ -60,14 +74,14 @@ export default function Search() {
                         </BookInformation>
                     ))}
                 </BookContainer>
-            )} 
+            )}
 
             <Modal
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
                 style={modalStyles}
             >
-                <h2>{readBookTitle && readBookTitle.title}</h2>
+                <h2>{readBookTitle.title}</h2>
                 <ModalTextarea
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
