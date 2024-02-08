@@ -3,7 +3,7 @@ import "./Styles/search.css"
 import searchStore from './Store/searchStore';
 import reviewStore from './Store/reviewStore';
 import { searchBook } from "./Api";
-import { modalStyles, ModalTextarea, ModalButton, CloseButton } from "./Styles/modalStyles"
+import { modalStyles, ReviewContainer, ModalTextarea, ModalButton, CloseButton } from "./Styles/modalStyles"
 import Modal from 'react-modal';
 
 export default function Search() {
@@ -35,6 +35,10 @@ export default function Search() {
         setIsModalOpen(true);
     };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     const handleReviewSubmit = () => {
         if (review.trim() === '') {
             alert("리뷰를 입력하세요.");
@@ -47,11 +51,7 @@ export default function Search() {
             closeModal();
         }
     };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
+    
     return (
         <div>
             <div className="searchContainer">
@@ -87,21 +87,23 @@ export default function Search() {
                 onRequestClose={closeModal}
                 style={modalStyles}
             >
-                <CloseButton onClick={closeModal}>x</CloseButton>
+                <CloseButton onClick={closeModal}>Close</CloseButton>
 
                 <h2>{readBookTitle.title}</h2>
                 <h4>작가 : {readBookTitle.author}</h4>
                 <h4>출판사 : {readBookTitle.publisher}</h4>
                 <h4>출간일 : {readBookTitle.pubdate}</h4>
                 <p>{readBookTitle.description}</p><br/>
+                
+                <ReviewContainer>
+                    <ModalTextarea
+                        value={review}
+                        onChange={(e) => setReview(e.target.value)}
+                        placeholder="리뷰를 입력하세요"
+                    />
 
-                <ModalTextarea
-                    value={review}
-                    onChange={(e) => setReview(e.target.value)}
-                    placeholder="리뷰를 입력하세요"
-                />
-
-                <ModalButton onClick={handleReviewSubmit}>Register</ModalButton>
+                    <ModalButton onClick={handleReviewSubmit}>Register</ModalButton>
+                </ReviewContainer>
             </Modal>
         </div>
     );

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import searchStore from './Store/searchStore';
 import reviewStore from './Store/reviewStore';
-import { modalStyles, CloseButton } from "./Styles/modalStyles"
+import { modalStyles, CloseButton, ModalButton } from "./Styles/modalStyles"
 import Modal from 'react-modal';
 
 export default function Home() {
@@ -24,23 +24,23 @@ export default function Home() {
         setIsModalOpen(true);
     };
 
-    const deleteBook = (index) => {
-        const updatedReadBookTitles = JSON.parse(localStorage.getItem("readBookTitles"));
-        const updatedReviews = JSON.parse(localStorage.getItem("reviews"));
-
-        updatedReadBookTitles.splice(index, 1);
-        updatedReviews.splice(index, 1);
-    
-        localStorage.setItem("readBookTitles", JSON.stringify(updatedReadBookTitles));
-        localStorage.setItem("reviews", JSON.stringify(updatedReviews));
-
-        closeModal();
-        window.location.reload();
-    };
-
     const closeModal = () => {
         setBookIndex(null);
         setIsModalOpen(false);
+    };
+
+    const deleteBook = (index) => {
+        const updateReadBookTitles = JSON.parse(localStorage.getItem("readBookTitles"));
+        const updateReviews = JSON.parse(localStorage.getItem("reviews"));
+
+        updateReadBookTitles.splice(index, 1);
+        updateReviews.splice(index, 1);
+    
+        localStorage.setItem("readBookTitles", JSON.stringify(updateReadBookTitles));
+        localStorage.setItem("reviews", JSON.stringify(updateReviews));
+
+        closeModal();
+        window.location.reload();
     };
 
     return (
@@ -56,7 +56,7 @@ export default function Home() {
                 onRequestClose={closeModal}
                 style={modalStyles}
             >
-                <CloseButton onClick={closeModal}>x</CloseButton>
+                <CloseButton onClick={closeModal}>Close</CloseButton><br/>
                 
                 <div>
                     {bookIndex !== null && (
@@ -64,12 +64,12 @@ export default function Home() {
                             <h2>{readBookTitles[bookIndex].title}</h2>
                             <h4>작가 : {readBookTitles[bookIndex].author}</h4>
                             <h4>출판사 : {readBookTitles[bookIndex].publisher}</h4>
-                            <h4>출간일 : {readBookTitles[bookIndex].pubdate}</h4>
-                            <p>{readBookTitles[bookIndex].description}</p>
+                            <h4>작성일 : </h4>
+
                             <h4>Book Review</h4>
                             <p>{reviews[bookIndex]}</p>
                             
-                            <button onClick={() => deleteBook(bookIndex)}>Delete</button>
+                            <ModalButton onClick={() => deleteBook(bookIndex)}>Delete</ModalButton>
                         </div>
                     )}
                 </div>
