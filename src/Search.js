@@ -42,10 +42,8 @@ export default function Search() {
         } else {
             setReadBookTitles(readBookTitle);
             setReviews(review);
-
             setReview('');
             setQuery('');
-            
             closeModal();
         }
     };
