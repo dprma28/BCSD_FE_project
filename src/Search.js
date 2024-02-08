@@ -51,6 +51,22 @@ export default function Search() {
             closeModal();
         }
     };
+
+    const pubdateFormat = () => {
+        if (!readBookTitle.pubdate) {
+            return '출간일 정보 없음';
+        }
+    
+        let pubdate = readBookTitle.pubdate;
+
+        let year = pubdate.substr(0,4);
+        let month = pubdate.substr(4,2);
+        let date = pubdate.substr(6,2);
+        
+        let updateDate = `${year}.${month}.${date}`;
+
+        return updateDate;
+    };
     
     return (
         <div>
@@ -87,12 +103,12 @@ export default function Search() {
                 onRequestClose={closeModal}
                 style={modalStyles}
             >
-                <CloseButton onClick={closeModal}>Close</CloseButton>
+                <CloseButton onClick={closeModal}>Close</CloseButton><br/>
 
                 <h2>{readBookTitle.title}</h2>
                 <h4>작가 : {readBookTitle.author}</h4>
                 <h4>출판사 : {readBookTitle.publisher}</h4>
-                <h4>출간일 : {readBookTitle.pubdate}</h4>
+                <h4>출간일 : {pubdateFormat()}</h4>
                 <p>{readBookTitle.description}</p><br/>
                 
                 <ReviewContainer>
