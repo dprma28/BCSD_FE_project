@@ -13,7 +13,7 @@ const useSearchStore = create((set) => ({
     readBookTitle: '',
     setReadBookTitle: (title) => set({ readBookTitle: title }),
 
-    readBookTitles: JSON.parse(localStorage.getItem("readBookTitles")) || [],
+    readBookTitles: JSON.parse(localStorage.getItem("readBookTitles")),
     setReadBookTitles: (newTitle) => {
         set((prev) => {
             localStorage.setItem("readBookTitles", JSON.stringify([...prev.readBookTitles, newTitle]));
