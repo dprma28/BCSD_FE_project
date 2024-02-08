@@ -62,15 +62,13 @@ export default function Home() {
                     {bookIndex !== null && (
                         <div>
                             <h2>{readBookTitles[bookIndex].title}</h2>
-
                             <h4>작가 : {readBookTitles[bookIndex].author}</h4>
                             <h4>출판사 : {readBookTitles[bookIndex].publisher}</h4>
                             <h4>출간일 : {readBookTitles[bookIndex].pubdate}</h4>
                             <p>{readBookTitles[bookIndex].description}</p>
-                            
                             <h4>Book Review</h4>
                             <p>{reviews[bookIndex]}</p>
-
+                            
                             <button onClick={() => deleteBook(bookIndex)}>Delete</button>
                         </div>
                     )}
