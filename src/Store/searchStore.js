@@ -16,8 +16,20 @@ const useSearchStore = create((set) => ({
     readBookTitles: JSON.parse(localStorage.getItem("readBookTitles")),
     setReadBookTitles: (newTitle) => {
         set((prev) => {
-            localStorage.setItem("readBookTitles", JSON.stringify([...prev.readBookTitles, newTitle]));
-            return { readBookTitles: [...prev.readBookTitles, newTitle] };
+            const arrangeTitles = [...(prev.readBookTitles || []), newTitle];
+
+            localStorage.setItem("readBookTitles", JSON.stringify(arrangeTitles));
+            return { readBookTitles: arrangeTitles };
+        });
+    },
+
+    dates: JSON.parse(localStorage.getItem("dates")),
+    setDates: (today) => {
+        set((prev) => {
+            const arrangeDates = [...(prev.dates || []), today];
+            
+            localStorage.setItem("dates", JSON.stringify(arrangeDates));
+            return { dates: arrangeDates };
         });
     },
 }));

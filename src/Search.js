@@ -9,8 +9,9 @@ import Modal from 'react-modal';
 export default function Search() {
     const { query, setQuery, 
             searchResult, setSearchResult, 
+            isModalOpen, setIsModalOpen, 
             readBookTitle, setReadBookTitle, setReadBookTitles,
-            isModalOpen, setIsModalOpen } = searchStore();
+            setDates } = searchStore();
     const { review, setReview, setReviews } = reviewStore();
 
     const handleSearch = async () => {
@@ -39,15 +40,18 @@ export default function Search() {
         setIsModalOpen(false);
     };
 
-    const handleReviewSubmit = () => {
+    const handleReviewRegister = () => {
         if (review.trim() === '') {
             alert("리뷰를 입력하세요.");
             return;
         } else {
             setReadBookTitles(readBookTitle);
             setReviews(review);
+            setDates(dateOfWrite());
+
             setReview('');
             setQuery('');
+            
             closeModal();
         }
     };
@@ -66,6 +70,20 @@ export default function Search() {
         let updateDate = `${year}.${month}.${date}`;
 
         return updateDate;
+    };
+
+    const dateOfWrite = () => {
+        let today = new Date();
+
+        let year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        let date = today.getDate();
+                
+        let hours = today.getHours();
+        let minutes = today.getMinutes();
+
+        let updateToday = `${year}.${month}.${date} ${hours}:${minutes}`;
+        return updateToday;
     };
     
     return (
@@ -118,7 +136,7 @@ export default function Search() {
                         placeholder="리뷰를 입력하세요"
                     />
 
-                    <ModalButton onClick={handleReviewSubmit}>Register</ModalButton>
+                    <ModalButton onClick={handleReviewRegister}>Register</ModalButton>
                 </ReviewContainer>
             </Modal>
         </div>

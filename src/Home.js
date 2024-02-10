@@ -6,7 +6,7 @@ import { modalStyles, CloseButton, ModalButton } from "./Styles/modalStyles"
 import Modal from 'react-modal';
 
 export default function Home() {
-    const { readBookTitles, isModalOpen, setIsModalOpen } = searchStore();
+    const { readBookTitles, isModalOpen, setIsModalOpen, dates } = searchStore();
     const { reviews } = reviewStore();
     const [bookIndex, setBookIndex] = useState(null);
 
@@ -25,19 +25,21 @@ export default function Home() {
     };
 
     const closeModal = () => {
-        setBookIndex(null);
         setIsModalOpen(false);
     };
 
     const deleteBook = (index) => {
-        const updateReadBookTitles = JSON.parse(localStorage.getItem("readBookTitles"));
-        const updateReviews = JSON.parse(localStorage.getItem("reviews"));
+        const newArrangeTitles = JSON.parse(localStorage.getItem("readBookTitles"));
+        const newArrangeReviews = JSON.parse(localStorage.getItem("reviews"));
+        const newArrangeDates = JSON.parse(localStorage.getItem("dates"));
 
-        updateReadBookTitles.splice(index, 1);
-        updateReviews.splice(index, 1);
+        newArrangeTitles.splice(index, 1);
+        newArrangeReviews.splice(index, 1);
+        newArrangeDates.splice(index, 1);
     
-        localStorage.setItem("readBookTitles", JSON.stringify(updateReadBookTitles));
-        localStorage.setItem("reviews", JSON.stringify(updateReviews));
+        localStorage.setItem("readBookTitles", JSON.stringify(newArrangeTitles));
+        localStorage.setItem("reviews", JSON.stringify(newArrangeReviews));
+        localStorage.setItem("dates", JSON.stringify(newArrangeDates));
 
         closeModal();
         window.location.reload();
@@ -64,7 +66,7 @@ export default function Home() {
                             <h2>{readBookTitles[bookIndex].title}</h2>
                             <h4>작가 : {readBookTitles[bookIndex].author}</h4>
                             <h4>출판사 : {readBookTitles[bookIndex].publisher}</h4>
-                            <h4>작성일 : </h4>
+                            <h4>작성일 : {dates[bookIndex]}</h4>
 
                             <h4>Book Review</h4>
                             <p>{reviews[bookIndex]}</p>

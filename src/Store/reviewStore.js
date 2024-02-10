@@ -7,8 +7,10 @@ const useReviewStore = create((set) => ({
     reviews: JSON.parse(localStorage.getItem("reviews")),
     setReviews: (newReview) => {
         set((prev) => {
-            localStorage.setItem("reviews", JSON.stringify([...prev.reviews, newReview]));
-            return { reviews: [...prev.reviews, newReview] };
+            const arrangeReviews = [...(prev.reviews || []), newReview];
+            
+            localStorage.setItem("reviews", JSON.stringify(arrangeReviews));
+            return { reviews: arrangeReviews };
         });
     },
 }));
