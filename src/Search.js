@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Styles/search.css"
 import searchStore from './Store/searchStore';
 import reviewStore from './Store/reviewStore';
@@ -13,17 +13,29 @@ export default function Search() {
             readBookTitle, setReadBookTitle, setReadBookTitles,
             setDates } = searchStore();
     const { review, setReview, setReviews } = reviewStore();
+    const [searchFilter, setSearchFilter] = useState("title");
 
     const handleSearch = async () => {
         if(query.trim() === '') {
-            alert("책 제목을 입력하세요.");
+            alert("도서명/작가명을 입력하세요");
             return;
         }
-
+    
         const result = await searchBook(query);
-
-        if(result) {
-            setSearchResult(result);
+        let arrangeBook = [];
+    
+        for(let i = 0; i < result.length; i++) {
+            if (searchFilter === "title" && result[i].title.includes(query)) {
+                arrangeBook.push(result[i]);
+            } else if (searchFilter === "author" && result[i].author.includes(query)) {
+                arrangeBook.push(result[i]);
+            }
+        }
+        
+        if(arrangeBook.length > 0) {
+            setSearchResult(arrangeBook);
+        } else {
+            alert("검색 결과가 없습니다.");
         }
     };
 
@@ -60,7 +72,7 @@ export default function Search() {
         if (!readBookTitle.pubdate) {
             return '출간일 정보 없음';
         }
-    
+
         let pubdate = readBookTitle.pubdate;
 
         let year = pubdate.substr(0,4);
@@ -89,12 +101,18 @@ export default function Search() {
     return (
         <div>
             <div className="searchContainer">
+                <select className="filter" onChange={(e) => setSearchFilter(e.target.value)}>
+                    <option value="title">제목</option>
+                    <option value="author">작가</option>
+                </select>
+
                 <input className="searchInput" 
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="책 제목을 입력하세요"
+                    placeholder="search"
                 />
+
                 <div className="searchButton" onClick={handleSearch}>🔍︎</div>
             </div>
 
@@ -128,7 +146,7 @@ export default function Search() {
                 <h4>출판사 : {readBookTitle.publisher}</h4>
                 <h4>출간일 : {pubdateFormat()}</h4>
                 <p>{readBookTitle.description}</p><br/>
-                
+
                 <ReviewContainer>
                     <ModalTextarea
                         value={review}

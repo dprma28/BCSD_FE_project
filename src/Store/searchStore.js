@@ -26,10 +26,10 @@ const useSearchStore = create((set) => ({
     dates: JSON.parse(localStorage.getItem("dates")),
     setDates: (today) => {
         set((prev) => {
-            const arrangeDates = [...(prev.dates || []), today];
+            const arrangeDate = [...(prev.dates || []), today];
             
-            localStorage.setItem("dates", JSON.stringify(arrangeDates));
-            return { dates: arrangeDates };
+            localStorage.setItem("dates", JSON.stringify(arrangeDate));
+            return { dates: arrangeDate };
         });
     },
 }));

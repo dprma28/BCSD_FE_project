@@ -3,10 +3,17 @@
     justify-content: center;
     padding: 30px;
 }
+.filter {
+    background-color: #3c280d;
+    color: rgb(235, 204, 167);
+    margin-right: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
 .searchInput {
     width: 600px;
     padding: 15px;
-    margin-right: 20px;
+    margin-right: 10px;
     background-color: #3c280d;
     color: rgb(235, 204, 167);
     font-size: medium;
@@ -23,6 +30,7 @@
     background-color: #3c280d;
     color: rgb(235, 204, 167);
     border: none;
+    cursor: pointer;
 }
 .bookContainer {
     display: flex;
