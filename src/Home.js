@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import searchStore from './Store/searchStore';
-import reviewStore from './Store/reviewStore';
+import useSearchStore from "./Store/searchStore";
+import useReviewStore from "./Store/reviewStore";
+import useStarStore from "./Store/starStore";
 import { modalStyles, CloseButton, ModalButton } from "./Styles/modalStyles"
 import Modal from 'react-modal';
 
 export default function Home() {
-    const { readBookTitles, isModalOpen, setIsModalOpen, dates } = searchStore();
-    const { reviews } = reviewStore();
+    const { readBookTitles, isModalOpen, setIsModalOpen, dates } = useSearchStore();
+    const { reviews } = useReviewStore();
+    const { stars } = useStarStore();
     const [bookIndex, setBookIndex] = useState(null);
-
-    const BookImage = styled.div`
-        float: left;
-        margin: 30px 0px 30px 80px;
-    `;
 
     const handleBookClick = (index) => {
         setBookIndex(index);
@@ -32,14 +29,17 @@ export default function Home() {
         const newArrangeTitles = JSON.parse(localStorage.getItem("readBookTitles"));
         const newArrangeReviews = JSON.parse(localStorage.getItem("reviews"));
         const newArrangeDates = JSON.parse(localStorage.getItem("dates"));
+        const newArrangeStars = JSON.parse(localStorage.getItem("stars"));
 
         newArrangeTitles.splice(index, 1);
         newArrangeReviews.splice(index, 1);
         newArrangeDates.splice(index, 1);
+        newArrangeStars.splice(index, 1);
     
         localStorage.setItem("readBookTitles", JSON.stringify(newArrangeTitles));
         localStorage.setItem("reviews", JSON.stringify(newArrangeReviews));
         localStorage.setItem("dates", JSON.stringify(newArrangeDates));
+        localStorage.setItem("stars", JSON.stringify(newArrangeStars));
 
         closeModal();
         window.location.reload();
@@ -68,6 +68,7 @@ export default function Home() {
                             <h4>출판사 : {readBookTitles[bookIndex].publisher}</h4>
                             <h4>작성일 : {dates[bookIndex]}</h4>
 
+                            <h4>별점 {stars[bookIndex]}</h4>
                             <h4>Book Review</h4>
                             <p>{reviews[bookIndex]}</p>
                             
@@ -79,3 +80,8 @@ export default function Home() {
         </div>
     );
 }
+
+const BookImage = styled.div`
+    float: left;
+    margin: 30px 0px 30px 80px;
+`;

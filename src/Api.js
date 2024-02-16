@@ -4,7 +4,7 @@ const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
 
 const searchBook = async(query) => {
     try {
-        const search = await fetch(`${NAVER_API_URL}?query=${query}`, {
+        const search = await fetch(`${NAVER_API_URL}?display=30&query=${query}`, {
             headers: {
                 'X-Naver-Client-Id': clientId,
                 'X-Naver-Client-Secret': clientSecret,

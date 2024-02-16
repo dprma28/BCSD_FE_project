@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./Styles/search.css"
-import searchStore from './Store/searchStore';
-import reviewStore from './Store/reviewStore';
+import useSearchStore from "./Store/searchStore";
+import useReviewStore from "./Store/reviewStore";
+import useStarStore from "./Store/starStore";
+import starScore from "./StarScore";
 import { searchBook } from "./Api";
 import { modalStyles, ReviewContainer, ModalTextarea, ModalButton, CloseButton } from "./Styles/modalStyles"
-import Modal from 'react-modal';
+import Modal from "react-modal";
 
 export default function Search() {
     const { query, setQuery, 
             searchResult, setSearchResult, 
             isModalOpen, setIsModalOpen, 
             readBookTitle, setReadBookTitle, setReadBookTitles,
-            setDates } = searchStore();
-    const { review, setReview, setReviews } = reviewStore();
+            setDates } = useSearchStore();
+    const { review, setReview, setReviews } = useReviewStore();
+    const { rating, setRating, setStars } = useStarStore();
     const [searchFilter, setSearchFilter] = useState("title");
 
     const handleSearch = async () => {
@@ -35,7 +38,7 @@ export default function Search() {
         if(arrangeBook.length > 0) {
             setSearchResult(arrangeBook);
         } else {
-            alert("검색 결과가 없습니다.");
+            alert("검색 결과가 없습니다");
         }
     };
 
@@ -60,9 +63,11 @@ export default function Search() {
             setReadBookTitles(readBookTitle);
             setReviews(review);
             setDates(dateOfWrite());
+            setStars(`${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}`);
 
             setReview('');
             setQuery('');
+            setRating(0);
             
             closeModal();
         }
@@ -146,6 +151,8 @@ export default function Search() {
                 <h4>출판사 : {readBookTitle.publisher}</h4>
                 <h4>출간일 : {pubdateFormat()}</h4>
                 <p>{readBookTitle.description}</p><br/>
+                
+                <div>{starScore()}</div><br/>
 
                 <ReviewContainer>
                     <ModalTextarea
